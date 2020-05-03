@@ -403,6 +403,20 @@ where
     }
 }
 
+#[cfg(feature = "serde")]
+impl<N> ufmt::uDebug for String<N>
+where
+    N: ArrayLength<u8>,
+{
+    fn fmt<W>(&self, f: &mut ufmt::Formatter<'_, W>) -> Result<(), W::Error>
+    where
+        W: ufmt::uWrite + ?Sized,
+    {
+        <[u8] as ufmt::uDebug>::fmt(self.as_str().as_bytes(), f)
+    }
+}
+
+
 impl<N> fmt::Display for String<N>
 where
     N: ArrayLength<u8>,

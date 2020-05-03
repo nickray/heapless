@@ -447,6 +447,20 @@ where
     }
 }
 
+#[cfg(feature = "serde")]
+impl<T, N> ufmt::uDebug for Vec<T, N>
+where
+    T: ufmt::uDebug,
+    N: ArrayLength<T>,
+{
+    fn fmt<W>(&self, f: &mut ufmt::Formatter<'_, W>) -> Result<(), W::Error>
+    where
+        W: ufmt::uWrite + ?Sized,
+    {
+        <[T] as ufmt::uDebug>::fmt(self, f)
+    }
+}
+
 impl<T, N> Drop for Vec<T, N>
 where
     N: ArrayLength<T>,
